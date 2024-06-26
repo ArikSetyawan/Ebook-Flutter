@@ -13,8 +13,10 @@ class _DetailBookPageState extends State<DetailBookPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: const Text("Detail Book"),
       ),
@@ -35,9 +37,9 @@ class _DetailBookPageState extends State<DetailBookPage> {
               const SizedBox(height: 24,),
               Row(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: 171,
-                    child: Text("A Doll's House : a play", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
+                    child: Text("A Doll's House : a play", style: header16Bold),
                   ),
                   const Spacer(),
                   IconButton(onPressed: (){}, icon: const Icon(Icons.favorite_outline))

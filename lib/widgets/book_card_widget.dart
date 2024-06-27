@@ -1,10 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ebook_flutter/blocs/book/bloc/book_bloc.dart';
+import 'package:ebook_flutter/blocs/detail_book/bloc/detail_book_bloc.dart';
+import 'package:ebook_flutter/blocs/favourite_book/bloc/favourite_book_bloc.dart';
+import 'package:ebook_flutter/models/book.dart';
 import 'package:ebook_flutter/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 class BookCardWidget extends StatelessWidget {
+  final Book book;
   const BookCardWidget({
-    super.key,
+    super.key, required this.book,
   });
 
   @override
@@ -13,7 +19,8 @@ class BookCardWidget extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 15),
       child: InkWell(
         onTap: () {
-          context.pushNamed('book', queryParameters: {'book_id':"123"});
+          context.read<DetailBookBloc>().add(LoadDetailBook(book: book));
+          context.pushNamed('book');
         },
         borderRadius: BorderRadius.circular(10),
         child: Ink(
@@ -27,10 +34,12 @@ class BookCardWidget extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: CachedNetworkImage(
+                  width: 86,
                   placeholder: (context, url) {
                     return const CircularProgressIndicator();
                   },
-                  imageUrl: "https://www.gutenberg.org/cache/epub/2542/pg2542.cover.medium.jpg",
+                  errorWidget: (context, url, error) => Image.asset('assets/images/not-found.png'),
+                  imageUrl: book.formats.imageJpeg ?? "",
                 ),
               ),
               const SizedBox(width: 10),
@@ -38,27 +47,57 @@ class BookCardWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 125,
-                    child: Text("A Doll's House : a play", style: header16Bold),
+                    width: 135,
+                    child: Text(book.title, style: header16Bold, maxLines: 2, overflow: TextOverflow.ellipsis,),
                   ),
                   const Spacer(),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        const WidgetSpan(
-                          child: Icon(Icons.person),
-                        ),
-                        TextSpan(
-                          text: " Ibsen, Henrik",
-                          style: descriptionText12Regular.copyWith(color: sixthColor)
-                        ),
-                      ],
+                  SizedBox(
+                    width: 165,
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          const WidgetSpan(
+                            child: Icon(Icons.person),
+                          ),
+                          TextSpan(
+                            text: book.authors.map((e) => e.name).toList().join(','),
+                            style: descriptionText12Regular.copyWith(color: sixthColor),
+                          ),
+                        ],
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   )
                 ],
               ),
               const Spacer(),
-              IconButton(onPressed: (){}, icon: const Icon(Icons.favorite_border))
+              Builder(
+                builder: (context) {
+                  if (book.favourite) {
+                    return IconButton(
+                      onPressed: () {
+                        final BookBloc bookBloc = BlocProvider.of<BookBloc>(context);
+                        final BookState bookState = bookBloc.state;
+                        if (bookState is BookLoaded) {
+                          context.read<BookBloc>().add(RemoveFromFavouriteBook(bookResponse: bookState.bookResponse, book: book));
+                        }
+                        context.read<FavouriteBookBloc>().add(LoadFavouriteBooks());
+                      },
+                      icon: const Icon(Icons.favorite, color: Colors.redAccent,));
+                  } else {
+                    return IconButton(
+                      onPressed: () {
+                        final BookBloc bookBloc = BlocProvider.of<BookBloc>(context);
+                        final BookState bookState = bookBloc.state;
+                        if (bookState is BookLoaded) {
+                          context.read<BookBloc>().add(AddToFavouriteBook(bookResponse: bookState.bookResponse, book: book));
+                        }
+                        context.read<FavouriteBookBloc>().add(LoadFavouriteBooks());
+                      },
+                      icon: const Icon(Icons.favorite_outline));
+                  }
+                }
+              )
             ],
           ),
         ),

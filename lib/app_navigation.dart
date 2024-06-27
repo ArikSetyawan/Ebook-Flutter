@@ -59,8 +59,7 @@ class AppNavigation {
         path: '/book',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (BuildContext context, GoRouterState state) {
-          final int bookId = int.parse(state.uri.queryParameters['book_id']!);
-          return DetailBookPage(bookId: bookId);
+          return const DetailBookPage();
         },
       ),
 

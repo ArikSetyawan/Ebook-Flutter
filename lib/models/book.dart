@@ -66,13 +66,13 @@ class Book {
 
 class Author {
     String name;
-    int birthYear;
-    int deathYear;
+    int? birthYear;
+    int? deathYear;
 
     Author({
         required this.name,
-        required this.birthYear,
-        required this.deathYear,
+        this.birthYear,
+        this.deathYear,
     });
 
     factory Author.fromJson(Map<String, dynamic> json) => Author(
@@ -89,26 +89,26 @@ class Author {
 }
 
 class Formats {
-    String textHtml;
-    String textHtmlCharsetUtf8;
-    String applicationEpubZip;
-    String applicationXMobipocketEbook;
-    String textPlainCharsetUtf8;
-    String applicationRdfXml;
-    String imageJpeg;
-    String applicationOctetStream;
-    String textPlainCharsetUsAscii;
+    String? textHtml;
+    String? textHtmlCharsetUtf8;
+    String? applicationEpubZip;
+    String? applicationXMobipocketEbook;
+    String? textPlainCharsetUtf8;
+    String? applicationRdfXml;
+    String? imageJpeg;
+    String? applicationOctetStream;
+    String? textPlainCharsetUsAscii;
 
     Formats({
-        required this.textHtml,
-        required this.textHtmlCharsetUtf8,
-        required this.applicationEpubZip,
-        required this.applicationXMobipocketEbook,
-        required this.textPlainCharsetUtf8,
-        required this.applicationRdfXml,
-        required this.imageJpeg,
-        required this.applicationOctetStream,
-        required this.textPlainCharsetUsAscii,
+        this.textHtml,
+        this.textHtmlCharsetUtf8,
+        this.applicationEpubZip,
+        this.applicationXMobipocketEbook,
+        this.textPlainCharsetUtf8,
+        this.applicationRdfXml,
+        this.imageJpeg,
+        this.applicationOctetStream,
+        this.textPlainCharsetUsAscii,
     });
 
     factory Formats.fromJson(Map<String, dynamic> json) => Formats(

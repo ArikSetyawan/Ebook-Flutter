@@ -1,5 +1,7 @@
 import 'package:ebook_flutter/app_navigation.dart';
 import 'package:ebook_flutter/blocs/book/bloc/book_bloc.dart';
+import 'package:ebook_flutter/blocs/detail_book/bloc/detail_book_bloc.dart';
+import 'package:ebook_flutter/blocs/favourite_book/bloc/favourite_book_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,6 +19,12 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => BookBloc(),
+        ),
+        BlocProvider(
+          create: (context) => DetailBookBloc(),
+        ),
+        BlocProvider(
+          create: (context) => FavouriteBookBloc(),
         ),
       ],
       child: MaterialApp.router(

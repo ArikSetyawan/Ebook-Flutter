@@ -12,11 +12,12 @@ final class BookInitial extends BookState {}
 final class BookLoading extends BookState {}
 
 final class BookLoaded extends BookState{
-  final List<Book> books;
+  final BookResponse bookResponse;
 
-  const BookLoaded({required this.books});
+  const BookLoaded({required this.bookResponse});
+
   @override
-  List<Object> get props => [books];
+  List<Object> get props => [bookResponse];
 
 }
 
